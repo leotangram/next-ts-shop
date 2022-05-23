@@ -1,15 +1,16 @@
 import { Box, Button, Chip, Grid, Typography } from '@mui/material'
 import { ShopLayout } from '../../components/layouts/ShopLayout'
+import { ProductSlideShow } from '../../components/products'
 import { initialData } from '../../database/products'
 
-const { description, price, title } = initialData.products[0]
+const { description, images, price, title } = initialData.products[0]
 
 const ProductPage = () => {
   return (
     <ShopLayout title={title} pageDescription={description}>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={7}>
-          {/* SlideShow */}
+          <ProductSlideShow images={images} />
         </Grid>
         <Grid item xs={12} sm={5}>
           <Box display="flex" flexDirection="column">
