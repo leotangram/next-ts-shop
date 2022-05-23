@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { Navbar } from '../ui'
+import { Navbar, SideMenu } from '../ui'
 
 interface ShopLayoutProps {
   children: JSX.Element | JSX.Element[]
@@ -26,7 +26,7 @@ export const ShopLayout = ({
       <nav>
         <Navbar />
       </nav>
-      {/* Sidebar */}
+      <SideMenu />
       <main
         style={{ margin: '80px auto', maxWidth: 1440, padding: '0px 30px' }}
       >
