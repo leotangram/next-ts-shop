@@ -1,9 +1,13 @@
 import { Box, Button, Chip, Grid, Typography } from '@mui/material'
 import { ShopLayout } from '../../components/layouts/ShopLayout'
-import { ProductSlideShow } from '../../components/products'
+import {
+  ProductSizeSelector,
+  ProductSlideShow
+} from '../../components/products'
+import { ItemCounter } from '../../components/ui'
 import { initialData } from '../../database/products'
 
-const { description, images, price, title } = initialData.products[0]
+const { description, images, price, sizes, title } = initialData.products[0]
 
 const ProductPage = () => {
   return (
@@ -22,7 +26,8 @@ const ProductPage = () => {
             </Typography>
             <Box sx={{ marginY: 2 }}>
               <Typography variant="subtitle2">Cantindad:</Typography>
-              {/* ItemCounter */}
+              <ItemCounter />
+              <ProductSizeSelector selectedSize={sizes[3]} sizes={sizes} />
             </Box>
             <Button color="secondary" className="circular-btn">
               Agregar al carrito
