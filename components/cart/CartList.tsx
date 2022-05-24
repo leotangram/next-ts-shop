@@ -1,4 +1,4 @@
-import { initialData } from '../../database/products'
+import { FC } from 'react'
 import {
   Box,
   Button,
@@ -9,12 +9,16 @@ import {
   Typography
 } from '@mui/material'
 import NextLink from 'next/link'
+import { initialData } from '../../database/products'
 import { ItemCounter } from '../ui'
 
 const productsInCart = initialData.products.filter((_, index) => index < 4)
-console.log({ productsInCart })
 
-export const CartList = () => {
+interface CartListProps {
+  editable?: boolean
+}
+
+export const CartList: FC<CartListProps> = ({ editable = false }) => {
   return (
     <>
       {productsInCart.map(({ images, price, slug, title }) => (
@@ -38,7 +42,11 @@ export const CartList = () => {
               <Typography variant="body1">
                 Talla: <strong>M</strong>
               </Typography>
-              <ItemCounter />
+              {editable ? (
+                <ItemCounter />
+              ) : (
+                <Typography variant="h5">3 items</Typography>
+              )}
             </Box>
           </Grid>
           <Grid
@@ -48,10 +56,12 @@ export const CartList = () => {
             alignItems="center"
             flexDirection="column"
           >
-            <Typography variant="subtitle">{`$${price}`}</Typography>
-            <Button variant="text" color="secondary">
-              Remover
-            </Button>
+            <Typography variant="subtitle1">{`$${price}`}</Typography>
+            {editable && (
+              <Button variant="text" color="secondary">
+                Remover
+              </Button>
+            )}
           </Grid>
         </Grid>
       ))}
