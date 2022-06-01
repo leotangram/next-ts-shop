@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { ChangeEvent, useContext, useState } from 'react'
 import { useRouter } from 'next/router'
 import {
   Box,
@@ -31,9 +31,20 @@ export const SideMenu = () => {
   const { isMenuOpen, toggleSideMenu } = useContext(UIContext)
   const router = useRouter()
 
+  const [searchTerm, setSearchTerm] = useState('')
+
   const navigateTo = (url: string) => {
-    router.push(`/category/${url}`)
+    router.push(url)
     toggleSideMenu()
+  }
+
+  const onChangeSearchTerm = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => setSearchTerm(e.target.value)
+
+  const onSearchTerm = () => {
+    if (!searchTerm.trim().length) return
+    navigateTo(`/search/${searchTerm}`)
   }
 
   return (
@@ -47,11 +58,16 @@ export const SideMenu = () => {
         <List>
           <ListItem>
             <Input
+              value={searchTerm}
+              onChange={onChangeSearchTerm}
+              onKeyPress={event =>
+                event.key === 'Enter' ? onSearchTerm() : null
+              }
               type="text"
               placeholder="Buscar..."
               endAdornment={
                 <InputAdornment position="end">
-                  <IconButton aria-label="toggle password visibility">
+                  <IconButton onClick={onSearchTerm}>
                     <SearchOutlined />
                   </IconButton>
                 </InputAdornment>
@@ -79,7 +95,7 @@ export const SideMenu = () => {
             </ListItemIcon>
             <ListItemText
               primary={'Hombres'}
-              onClick={() => navigateTo('men')}
+              onClick={() => navigateTo('/category/men')}
             />
           </ListItem>
 
@@ -89,7 +105,7 @@ export const SideMenu = () => {
             </ListItemIcon>
             <ListItemText
               primary={'Mujeres'}
-              onClick={() => navigateTo('women')}
+              onClick={() => navigateTo('/category/women')}
             />
           </ListItem>
 
@@ -99,7 +115,7 @@ export const SideMenu = () => {
             </ListItemIcon>
             <ListItemText
               primary={'Niños'}
-              onClick={() => navigateTo('children')}
+              onClick={() => navigateTo('/category/children')}
             />
           </ListItem>
 
