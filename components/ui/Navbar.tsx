@@ -1,4 +1,6 @@
+import { useContext, useMemo } from 'react'
 import NextLink from 'next/link'
+import { useRouter } from 'next/router'
 import {
   AppBar,
   Badge,
@@ -10,8 +12,20 @@ import {
   Typography
 } from '@mui/material'
 import { SearchOutlined, ShoppingCartOutlined } from '@mui/icons-material'
+import { UIContext } from '../../context'
+
+const CATEGORY = {
+  CHILDREN: '/category/children',
+  MEN: '/category/men',
+  WOMEN: '/category/women'
+}
 
 export const Navbar = () => {
+  const router = useRouter()
+  const { toggleSideMenu } = useContext(UIContext)
+
+  const category = useMemo(() => router.pathname, [router.pathname])
+
   return (
     <AppBar>
       <Toolbar>
@@ -25,17 +39,25 @@ export const Navbar = () => {
         <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
           <NextLink href="/category/men" passHref>
             <Link>
-              <Button>Hombres</Button>
+              <Button color={category === CATEGORY.MEN ? 'primary' : 'info'}>
+                Hombres
+              </Button>
             </Link>
           </NextLink>
           <NextLink href="/category/women" passHref>
             <Link>
-              <Button>Mujeres</Button>
+              <Button color={category === CATEGORY.WOMEN ? 'primary' : 'info'}>
+                Mujeres
+              </Button>
             </Link>
           </NextLink>
           <NextLink href="/category/children" passHref>
             <Link>
-              <Button>Niños</Button>
+              <Button
+                color={category === CATEGORY.CHILDREN ? 'primary' : 'info'}
+              >
+                Niños
+              </Button>
             </Link>
           </NextLink>
         </Box>
@@ -52,7 +74,7 @@ export const Navbar = () => {
             </IconButton>
           </Link>
         </NextLink>
-        <Button>Menú</Button>
+        <Button onClick={() => toggleSideMenu()}>Menú</Button>
       </Toolbar>
     </AppBar>
   )
