@@ -16,11 +16,12 @@ interface ProductCardProps {
 
 export const ProductCard: FC<ProductCardProps> = ({ product }) => {
   const [isHovered, setIsHovered] = useState(false)
+  const [imageLoaded, setImageLoaded] = useState(false)
 
   const productImage = useMemo(() => {
     return isHovered
-      ? `products/${product.images[1]}`
-      : `products/${product.images[0]}`
+      ? `/products/${product.images[1]}`
+      : `/products/${product.images[0]}`
   }, [isHovered])
 
   return (
@@ -37,12 +38,16 @@ export const ProductCard: FC<ProductCardProps> = ({ product }) => {
                 image={productImage}
                 alt={product.title}
                 className="fadeIn"
+                onLoad={() => setImageLoaded(true)}
               />
             </CardActionArea>
           </Link>
         </NextLink>
       </Card>
-      <Box sx={{ marginTop: 1 }} className="fadeIn">
+      <Box
+        sx={{ marginTop: 1, display: imageLoaded ? 'block' : 'none' }}
+        className="fadeIn"
+      >
         <Typography fontWeight={700}>{product.title}</Typography>
         <Typography fontWeight={500}>{`$${product.price}`}</Typography>
       </Box>
