@@ -22,7 +22,7 @@ export const ProductCard: FC<ProductCardProps> = ({ product }) => {
     return isHovered
       ? `/products/${product.images[1]}`
       : `/products/${product.images[0]}`
-  }, [isHovered])
+  }, [isHovered, product.images])
 
   return (
     <Box
