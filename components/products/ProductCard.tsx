@@ -4,6 +4,7 @@ import {
   Card,
   CardActionArea,
   CardMedia,
+  Chip,
   Link,
   Typography
 } from '@mui/material'
@@ -33,6 +34,13 @@ export const ProductCard: FC<ProductCardProps> = ({ product }) => {
         <NextLink href={`/product/${product.slug}`} passHref prefetch={false}>
           <Link>
             <CardActionArea>
+              {!product.inStock && (
+                <Chip
+                  color="primary"
+                  label="No hay disponibles"
+                  sx={{ position: 'absolute', zIndex: 99, top: 10, left: 10 }}
+                />
+              )}
               <CardMedia
                 component="img"
                 image={productImage}
