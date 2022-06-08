@@ -1,4 +1,5 @@
 import { FC, useEffect, useReducer } from 'react'
+import { useRouter } from 'next/router'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import { nextTSShop } from '../../api'
@@ -20,11 +21,16 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
+  const router = useRouter()
+
   useEffect(() => {
     checkToken()
   }, [])
 
   const checkToken = async () => {
+    if (!Cookies.get('token')) {
+      return
+    }
     try {
       const { data } = await nextTSShop.get('/user/validate-token')
       const { token, user } = data
@@ -85,8 +91,14 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     }
   }
 
+  const logout = () => {
+    Cookies.remove('token')
+    Cookies.remove('cart')
+    router.reload()
+  }
+
   return (
-    <AuthContext.Provider value={{ ...state, loginUser, registerUser }}>
+    <AuthContext.Provider value={{ ...state, loginUser, registerUser, logout }}>
       {children}
     </AuthContext.Provider>
   )
