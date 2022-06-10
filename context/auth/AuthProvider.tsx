@@ -1,5 +1,6 @@
 import { FC, useEffect, useReducer } from 'react'
 import { useRouter } from 'next/router'
+import { useSession, signOut } from 'next-auth/react'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import { nextTSShop } from '../../api'
@@ -22,10 +23,19 @@ interface AuthProviderProps {
 
 export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const router = useRouter()
+  const { data, status } = useSession()
+  const [state, dispatch] = useReducer(authReducer, Auth_INITIAL_STATE)
 
   useEffect(() => {
-    checkToken()
-  }, [])
+    if (status === 'authenticated') {
+      console.log({ user: data.user })
+      TODO: dispatch({ type: 'Auth - Login', payload: data.user as IUser })
+    }
+  }, [status, data])
+
+  // useEffect(() => {
+  //   checkToken()
+  // }, [])
 
   const checkToken = async () => {
     if (!Cookies.get('token')) {
@@ -40,8 +50,6 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
       Cookies.remove('token')
     }
   }
-
-  const [state, dispatch] = useReducer(authReducer, Auth_INITIAL_STATE)
 
   const loginUser = async (
     email: string,
@@ -92,9 +100,16 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   }
 
   const logout = () => {
-    Cookies.remove('token')
     Cookies.remove('cart')
-    router.reload()
+    Cookies.remove('firstName')
+    Cookies.remove('lastName')
+    Cookies.remove('address')
+    Cookies.remove('address2')
+    Cookies.remove('zip')
+    Cookies.remove('city')
+    Cookies.remove('country')
+    Cookies.remove('phone')
+    signOut()
   }
 
   return (

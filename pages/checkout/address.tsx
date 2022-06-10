@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import {
   Box,
@@ -46,10 +46,24 @@ const AddressPage = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
+    reset
   } = useForm<FormData>({
-    defaultValues: getAddressFromCookies()
+    defaultValues: {
+      firstName: '',
+      lastName: '',
+      address: '',
+      address2: '',
+      zip: '',
+      city: '',
+      country: countries[0].code,
+      phone: ''
+    }
   })
+
+  useEffect(() => {
+    reset(getAddressFromCookies())
+  }, [reset])
 
   const onAddressSubmit = (data: FormData) => {
     updateAddress(data)
@@ -135,24 +149,26 @@ const AddressPage = () => {
             />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <FormControl fullWidth>
-              <TextField
-                select
-                defaultValue={Cookies.get('country') || countries[0].code}
-                variant="filled"
-                label="País"
-                {...register('country', {
-                  required: 'Este campo es requerido'
-                })}
-                error={!!errors.country}
-              >
-                {countries.map(({ code, name }) => (
+            {/* <FormControl fullWidth> */}
+            <TextField
+              // select
+              // defaultValue={Cookies.get('country') || countries[0].code}
+              fullWidth
+              variant="filled"
+              label="País"
+              {...register('country', {
+                required: 'Este campo es requerido'
+              })}
+              error={!!errors.country}
+              helperText={errors.country?.message}
+            />
+            {/* {countries.map(({ code, name }) => (
                   <MenuItem key={code} value={code}>
                     {name}
                   </MenuItem>
                 ))}
-              </TextField>
-            </FormControl>
+              </TextField> */}
+            {/* </FormControl> */}
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField

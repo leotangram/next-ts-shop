@@ -1,5 +1,6 @@
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import NextLink from 'next/link'
+import { useRouter } from 'next/router'
 import {
   Box,
   Button,
@@ -10,6 +11,7 @@ import {
   Link,
   Typography
 } from '@mui/material'
+import Cookies from 'js-cookie'
 import { CartList, OrderSummary } from '../../components/cart'
 import { ShopLayout } from '../../components/layouts'
 import { CartContext } from '../../context'
@@ -17,6 +19,13 @@ import { countries } from '../../utils'
 
 const SummaryPage = () => {
   const { shippingAddress, numberOfItems } = useContext(CartContext)
+  const router = useRouter()
+
+  useEffect(() => {
+    if (!Cookies.get('firstName')) {
+      router.push('/checkout/address')
+    }
+  }, [router])
 
   if (!shippingAddress) return <></>
 
@@ -68,7 +77,8 @@ const SummaryPage = () => {
                 {city}, {zip}
               </Typography>
               <Typography>
-                {countries.find(({ code }) => code === country)?.name}
+                {/* {countries.find(({ code }) => code === country)?.name} */}
+                {country}
               </Typography>
               <Typography>{phone}</Typography>
               <Divider sx={{ marginY: 1 }} />
