@@ -15,8 +15,6 @@ interface OrderSummaryProps {
 export const OrderSummary: FC<OrderSummaryProps> = ({ orderValues }) => {
   const { numberOfItems, subTotal, tax, total } = useContext(CartContext)
 
-  console.log({ orderValues })
-
   const summaryValues = orderValues
     ? orderValues
     : { numberOfItems, subTotal, tax, total }
